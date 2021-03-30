@@ -1,0 +1,33 @@
+<h2>Travel Wishlist</h2>
+
+<!-- Method is post because we are creating a new thing. Here we use URL Reversing from urls.py. Looks up -->
+<form method="POST" action="{% url 'place_list' %}"> 
+    <!-- cross-site request forgery token -->
+    {% csrf_token %}
+    <!-- This will create the input fields -->
+    {{ new_place_form }}
+    <button type="submit">Add</button>
+</form>
+
+{% for place in places %}
+
+<div>
+    {{ place.name }} 
+
+    <!-- To make you web browser make a request to the server, we need to create a form element. This is basically something with a submit button -->
+    <form method="POST" action="{% url 'place_was_visited' place.pk %}"> <!-- Action is the url requested. place.pk is the current place's primary key. This is an aruguement -->
+        {% csrf_token %}
+        <button>Visited!</button>
+    </form>
+
+</div>
+
+<!-- Adding a directive which means is if the place, places list is empty, then display this HTML -->
+{% empty %}
+
+<p>You have no places in your wishlist</p>
+
+{% endfor %}
+
+<!-- Review this is an anchor tag -->
+<a href="{% url 'places_visited' %}">Places you've visited</a>
