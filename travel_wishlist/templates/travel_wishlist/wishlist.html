@@ -1,3 +1,7 @@
+<!-- Tells the wishlist template go look for the base template -->
+{% extends 'travel_wishlist/base.html' %} 
+{% block content %}
+
 <h2>Travel Wishlist</h2>
 
 <!-- Method is post because we are creating a new thing. Here we use URL Reversing from urls.py. Looks up -->
@@ -6,16 +10,17 @@
     {% csrf_token %}
     <!-- This will create the input fields -->
     {{ new_place_form }}
-    <button type="submit">Add</button>
+    <button id="add-new-place" type="submit">Add</button>
 </form>
 
 {% for place in places %}
 
-<div>
-    {{ place.name }} 
+<div class="wishlist-place">
+    <!-- Review span tags are basically pieces of text span -->
+    <span class="place-name">{{ place.name }} </span>
 
     <!-- To make you web browser make a request to the server, we need to create a form element. This is basically something with a submit button -->
-    <form method="POST" action="{% url 'place_was_visited' place.pk %}"> <!-- Action is the url requested. place.pk is the current place's primary key. This is an aruguement -->
+    <form class="visited-form" method="POST" action="{% url 'place_was_visited' place.pk %}"> <!-- Action is the url requested. place.pk is the current place's primary key. This is an aruguement -->
         {% csrf_token %}
         <button>Visited!</button>
     </form>
@@ -29,5 +34,5 @@
 
 {% endfor %}
 
-<!-- Review this is an anchor tag -->
-<a href="{% url 'places_visited' %}">Places you've visited</a>
+<!-- Everything in-between the block content and the endblock tag will be inserted into base HTML -->
+{% endblock %}
