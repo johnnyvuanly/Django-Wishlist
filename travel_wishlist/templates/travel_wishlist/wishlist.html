@@ -17,12 +17,12 @@
 
 <div class="wishlist-place">
     <!-- Review span tags are basically pieces of text span -->
-    <span class="place-name">{{ place.name }} </span>
+    <span id="place-name-{{ place.pk }}" class="place-name">{{ place.name }} </span>
 
     <!-- To make you web browser make a request to the server, we need to create a form element. This is basically something with a submit button -->
     <form class="visited-form" method="POST" action="{% url 'place_was_visited' place.pk %}"> <!-- Action is the url requested. place.pk is the current place's primary key. This is an aruguement -->
         {% csrf_token %}
-        <button>Visited!</button>
+        <button id="visited-button-{{ place.pk }}">Visited!</button>
     </form>
 
 </div>
