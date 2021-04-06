@@ -1,3 +1,8 @@
+""" The function of views is that it returns a response. View is used when a request
+is made to our web app. View has the logic that figures out how to respond to a particular
+request. Example database is queried for places that match a particular condition and returns
+a template and some data """
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place # import our place models
 from .forms import NewPlaceForm # import import forms
