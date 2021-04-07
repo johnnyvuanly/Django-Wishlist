@@ -13,5 +13,5 @@ class Place(models.Model):
     # Adding a string method
     def __str__(self): # Method in a class
         photo_str = self.photo.url if self.photo else 'no photo'
-        notes_str = self.notes[100:] # If you wanted to include info about notes
+        notes_str = self.notes[100:] if self.notes else 'no notes' # If you wanted to include info about notes
         return f'{self.name} visited? {self.visited} on {self.date_visited}. Notes: {notes_str}. Photo {photo_str}' # This is never going to be displayed to the user. This is something helpful for the developer to see

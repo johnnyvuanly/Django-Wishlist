@@ -15,17 +15,19 @@
 
 {% for place in places %}
 
-<div class="wishlist-place">
-    <!-- Review span tags are basically pieces of text span -->
-    <span id="place-name-{{ place.pk }}" class="place-name">{{ place.name }} </span>
+    <div class="wishlist-place">
+        <!-- Review span tags are basically pieces of text span -->
+        <span id="place-name-{{ place.pk }}" class="place-name">
+            <a href="{% url 'place_details' place.pk %}">{{ place.name }}</a>
+        </span>
 
-    <!-- To make you web browser make a request to the server, we need to create a form element. This is basically something with a submit button -->
-    <form class="visited-form" method="POST" action="{% url 'place_was_visited' place.pk %}"> <!-- Action is the url requested. place.pk is the current place's primary key. This is an aruguement -->
-        {% csrf_token %}
-        <button id="visited-button-{{ place.pk }}">Visited!</button>
-    </form>
+        <!-- To make you web browser make a request to the server, we need to create a form element. This is basically something with a submit button -->
+        <form class="visited-form" method="POST" action="{% url 'place_was_visited' place.pk %}"> <!-- Action is the url requested. place.pk is the current place's primary key. This is an aruguement -->
+            {% csrf_token %}
+            <button id="visited-button-{{ place.pk }}">Visited!</button>
+        </form>
 
-</div>
+    </div>
 
 <!-- Adding a directive which means is if the place, places list is empty, then display this HTML -->
 {% empty %}
