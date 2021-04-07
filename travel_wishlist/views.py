@@ -6,7 +6,8 @@ a template and some data """
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place # import our place models
 from .forms import NewPlaceForm # import import forms
-from django.contrib.auth.decorators import login_required # import login+required decorator 
+from django.contrib.auth.decorators import login_required # import login+required decorator
+from django.http import HttpResponseForbidden # Used to see if the user is allowed to make a request and if not return this response forbidden 
 
 # Create your views here.
 
