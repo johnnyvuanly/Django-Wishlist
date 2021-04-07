@@ -18,7 +18,7 @@ That data is loaded into the database before test in one class start running.
 This is inside travel_wishlist folder """
 class TestWishList(TestCase):
     # Load the fixture
-    fixtures = ['test_places']
+    fixtures = ['test_users', 'test_places']
 
     def test_wishlist_contains_not_visited_places(self):
         response = self.client.get(reverse('place_list'))
@@ -40,7 +40,7 @@ class TestVisitedPage(TestCase):
 """ Test places that were visited """
 class VisitedList(TestCase):
 
-    fixtures = ['test_places']
+    fixtures = ['test_users', 'test_places']
 
     def test_visited_list_shows_visited_places(self):
         response = self.client.get(reverse('places_visited'))
@@ -72,7 +72,7 @@ class TestAddNewPlace(TestCase):
 """ Test that when a places visited request is made to visit a place """
 class TestVisitPlace(TestCase):
 
-    fixtures = ['test_places']
+    fixtures = ['test_users', 'test_places']
 
     def test_visit_place(self):
 
