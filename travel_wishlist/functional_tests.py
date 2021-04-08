@@ -18,11 +18,11 @@ class TitleTest(LiveServerTestCase):
 
     def test_title_on_home_page(self):
         self.selenium.get(self.live_server_url)
-        self.selenium('Travel Wishlist', self.selenium.title) # You can think of selenium as your webbrowser
+        self.assertIn(self.selenium.title, 'Travel Wishlist') # You can think of selenium as your webbrowser
 
 class AddPlacesTest(LiveServerTestCase):
 
-    fixtures = ('test_places')
+    fixtures = ['test_places']
 
     @classmethod
     def setUpClass(cls):

@@ -42,12 +42,14 @@ def place_was_visited(request, place_pk): # needs another arguement, django will
     if request.method == 'POST':
         # place = Place.objects.get(pk=place_pk) # db query, returns the match one, one object
         place = get_object_or_404(Place, pk=place_pk) # Place is the class name and the query place is gong to be get object or 404. Try to make the query if found or 404 error
-        place.visited = True
-        place.save() # Any changes in code will not be reflected in the database unless you save
+        if place.user == request.user:
+            place.visited = True
+            place.save() # Any changes in code will not be reflected in the database unless you save
+        else:
+            return HttpResponseForbidden()
 
     return redirect('places_visited')
 
-@login_required
 def about(request):
     # Create some data
     author = 'Johnny'
@@ -58,3 +60,13 @@ def about(request):
 def place_details(request, place_pk):
     place = get_object_or_404(Place, pk=place_pk)
     return render(request, 'travel_wishlist/place_detail.html', {'place': place})
+
+@login_required
+def delete_place(request, place_pk):
+    place = get_object_or_404(Place, pk=place_pk)
+    if place.user == request.user:
+        place.delete() # Updating place.delete()
+        return redirect('place_list') # We have to return some kind of response for web app reasons, return place list
+    else:
+        return HttpResponseForbidden()
+
