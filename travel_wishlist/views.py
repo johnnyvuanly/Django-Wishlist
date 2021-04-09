@@ -5,9 +5,10 @@ a template and some data """
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place # import our place models
-from .forms import NewPlaceForm # import import forms
+from .forms import NewPlaceForm, TripReviewForm # import import forms
 from django.contrib.auth.decorators import login_required # import login+required decorator
 from django.http import HttpResponseForbidden # Used to see if the user is allowed to make a request and if not return this response forbidden 
+from django.contrib import messages
 
 # Create your views here.
 
@@ -59,7 +60,31 @@ def about(request):
 @login_required # Review, makes sure someone is logged in before this function can run
 def place_details(request, place_pk):
     place = get_object_or_404(Place, pk=place_pk)
-    return render(request, 'travel_wishlist/place_detail.html', {'place': place})
+
+    # TODO Does this place belong to the current user?
+    if place.user != request.user:
+        return HttpResponseForbidden()
+
+    # TODO Is this a GET request (show data + form), or a POST request (update Place object)?
+
+    # TODO If POST request, validate form data and update.
+    if request.method == 'POST':
+        form = TripReviewForm(request.POST, request.FILES, instance=place) # Make new trip review form object from data sent with HTTP request, put data the user sent and use that to update a model instance from the database
+        # Check if the form is valid
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Trip information updated!')
+        else:
+            messages.error(request, form.errors)
+        return redirect('place_details', place_pk=place_pk) # return redirects to place_details for this place
+
+    # TODO If GET request, show Place info and form
+    else: 
+        if place.visited:
+            review_form = TripReviewForm(instance=place)
+            return render(request, 'travel_wishlist/place_detail.html', {'place': place, 'review_form': review_form})
+        else:
+            return render(request, 'travel_wishlist/place_detail.html', {'place': place})
 
 @login_required
 def delete_place(request, place_pk):
