@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User # Import django user model
+from django.core.files.storage import default_storage
 
 # Create your models here.
 class Place(models.Model):
@@ -9,6 +10,28 @@ class Place(models.Model):
     notes = models.TextField(blank=True, null=True) # Allow blanks
     date_visited = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='user_images/', blank=True, null=True ) # Where the images get uploaded to our directory user images
+
+    # What this method does is going to override Django's save method 
+    def save(self, *args, **kwargs): # When we call save on our place object, we'll do our own tasks and then call through to the actual Django save
+        old_place = Place.objects.filter(pk=self.pk).first()
+        if old_place and old_place.photo:
+            if old_place.photo != self.photo: # Check if the photo is being changed. If old photo is not equal to new photo
+                self.delete_photo(old_place.photo) # Then delete that photo
+
+        super().save(*args, **kwargs) # super class method save
+    
+    def delete_photo(self, photo):
+        # Check to see if a photo exists
+        if default_storage.exists(photo.name):
+            default_storage.delete(photo.name)
+
+    # Overide the delete function self args, method is called before a object is deleted
+    def delete(self, *args, **kwargs):
+        if self.photos:
+            self.delete_photo(self.photo)
+
+        super().delete(*args, kwards)
+
 
     # Adding a string method
     def __str__(self): # Method in a class

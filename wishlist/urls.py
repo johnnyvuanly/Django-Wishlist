@@ -22,3 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('travel_wishlist.urls')) # Basically an import statement to go and find any URLs listed in a file called [urls] in the travel wishlist package
 ]
+
+# We have to tell this file how to route static requests
+from django.conf import settings
+from django.conf.urls.static import static
+
+# Checking if we are running it locally using the development server
+if settings.DEBUG:
+    # If we are running this locally in development mode, then add on these roots to static files
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
