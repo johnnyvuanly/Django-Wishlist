@@ -27,10 +27,10 @@ class Place(models.Model):
 
     # Overide the delete function self args, method is called before a object is deleted
     def delete(self, *args, **kwargs):
-        if self.photos:
+        if self.photo:
             self.delete_photo(self.photo)
 
-        super().delete(*args, kwards)
+        super().delete(*args, kwargs)
 
 
     # Adding a string method
