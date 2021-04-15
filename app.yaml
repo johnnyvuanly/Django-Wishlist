@@ -1,0 +1,16 @@
+runtime: python37
+entrypoint: gunicorn -b $PORT wishlist.wsgi
+
+# This explains how to differentiate between static files versus requests that require Django app logic to run
+handlers:
+- url: /static
+  static_dir: www/static/
+
+- url: /.*
+  script: auto
+
+env_variables:
+  TRAVELER_PW: Capstone2021Spr
+
+beta_settings:
+  cloud_sql_instances: wishlist-django-310619:us-central1:wishlist-db
